@@ -9,7 +9,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import { Navbar } from "../Header/Navbar";
 import { FlightDataContext } from "../../Contexts/FlightDataContext";
 import { Redirect } from "react-router-dom";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "../Css/Booking.module.css";
 import AirplaneTicketOutlinedIcon from "@mui/icons-material/AirplaneTicketOutlined";
 import CompareArrowsOutlinedIcon from "@mui/icons-material/CompareArrowsOutlined";
@@ -19,60 +19,69 @@ import ArrowUpwardSharpIcon from "@mui/icons-material/ArrowUpwardSharp";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { BookingDetailsContext } from "../../Contexts/BookingDetailsContext";
 import { FilterMenuDiv } from "./FilterMenu";
+import { width } from "@mui/system";
+
+
 
 function Booking() {
 
     const {flightContextData} = useContext(FlightDataContext)
+    console.log(flightContextData)
+    const [data,setData] = useState(flightContextData)
     const {flightDetails,handleFlightDetails} = useContext(BookingDetailsContext)
-    const [data, setData] = useState(flightContextData);
+    const [check,setCheck] = useState(false)
     const [redirectToBookings, setRedirectToBookings] = useState(false);
     
     const {token} = useContext(AuthContext)
 
-    const [showFilters, setShowFilters] = useState(false)
-    const offers = [
-        {
-            offerCode :"faljd",
-            flat:"Flat Rs. 799 OFF per Pax (up to Rs 2,400)"
-        },
-        {
-            offerCode :"akdjd",
-            flat:"Flat Rs. 399 OFF per Pax (up to Rs 1,400)"
-        },
-        {
-            offerCode :"afjlf",
-            flat:"Flat Rs. 999 OFF per Pax (up to Rs 3,400)"
-        },
-        {
-            offerCode :"yafaj",
-            flat:"Flat Rs. 229 OFF per Pax (up to Rs 1,00)"
-        },
-        {
-            offerCode :"adkdj",
-            flat:"Flat Rs. 899 OFF per Pax (up to Rs 1,100)"
+    const format =(dateISOString) =>{
+      let date = new Date(dateISOString);
+      let year = date.getFullYear();
+      let month = date.getMonth()+1;
+      let day = date.getDate();
+      let hour = date.getHours();
+      let minutes = date.getMinutes();
+        if (day < 10) {
+            date = '0' + date;
         }
-    ];
+        if (month < 10) {
+           month = '0' + month;
+        }
 
+        return `${day}/${month}/${year} - ${hour}:${minutes}`;
+
+    }
+    const diff = (first,second) =>{
+      let currentTime = new Date(first);
+      let expireTime = new Date(second);
+      let minutes = (expireTime - currentTime) / (1000 * 60);
+      let hours = Math.floor(minutes / 60);
+      minutes = minutes % 60;
+      return hours + "h " + minutes + "mn";
+    } 
+    // const [showFilters, setShowFilters] = useState(false)
+    
 
   const [vFair,setVFair] = useState(false)
 
   const handleVFair = ()=>{
-      if(vFair){
-          setVFair(false)
-        }else{
+    if(vFair){
+      setVFair(false)
+    }else{
             setVFair(true)
-      }
+          }
   }
-
-
+  
+  if(check && token === ""){
+    return <Redirect to={`/signin`}/>
+  }
+  
   const handleBook = (flightData)=>{
-    console.log(flightData)
+    setCheck(true)
     handleFlightDetails(flightData)
-    setRedirectToBookings(true)
-      // if(token !== ""){
-      // } else {
-      //   return <Redirect to={`/login`}/>
-      // }
+    setTimeout(() => {
+      setRedirectToBookings(true)
+    }, 2000);
   }
   if(redirectToBookings){
     return <Redirect to={`/checkout`}/>
@@ -81,7 +90,7 @@ function Booking() {
   return (
     <>
       <Navbar />
-
+ 
       <div className={styles.main_box}>
         <div className={styles.searchAgain}>
           <div className={styles.search_block}>
@@ -154,20 +163,7 @@ function Booking() {
 
         <div className={styles.block}>
           <div className={styles.left_block}>
-            {/* <div className={styles.dates}>
-              <div className={styles.sas}>
-                <div>{data[0].departure.dateShort}</div>
-                <div>
-                  <img
-                    width="13px"
-                    src="https://cdn-icons-png.flaticon.com/512/3104/3104891.png"
-                    alt="rupee-symbol"
-                  />
-                  {data[0].pricePerHead}
-                </div>
-              </div>
-            </div> */}
-            <h3>Showing Results for Departure Date {data[0].departure.dateShort}</h3>
+            {/* <h3>Showing Results for Departure Date {flightContextData[0].flight_date}</h3> */}
             <div className={styles.sort}>
               <div>SortBy</div>
               <div className={styles.dad}>
@@ -180,7 +176,7 @@ function Booking() {
                   //Sort data 
                          
                   let tempData = data;
-                  tempData.sort((a,b) => a.pricePerHead - b.pricePerHead);
+                  tempData.sort((a,b) => a - b);
                   setData([...tempData]);
 
                 }}>
@@ -196,29 +192,29 @@ function Booking() {
                       <div>
                         <img
                           width="20px"
-                          src={e.airplane.logo}
+                          src = "https://cdn4.iconfinder.com/data/icons/aiga-symbol-signs/444/aiga_departingflights-512.png"
                           alt="carrier-icon"
                         />
                       </div>
                       <div className={styles.fliDate}>
-                        <div style={{ fontWeight: "bold" }}>
-                          {e.airplane.name}
+                        <div style={{ fontWeight: "bold"}}>
+                          {e.airline.name}
                         </div>
                       </div>
                     </div>
                     <div className={styles.fliDate}>
-                      <div className={styles.time}>{e.departure.time}</div>
-                      <div>{e.origin}</div>
+                      <div className={styles.time}>{format(e.departure.scheduled)}</div>
+                      <div>{e.departure.airport}</div>
                     </div>
                     <div className={styles.fliDate}>
-                      <div className={styles.time}>{e.arrival}</div>
-                      <div>{e.destination}</div>
+                      <div className={styles.time}>{format(e.arrival.scheduled)}</div>
+                      <div>{e.arrival.airport}</div>
                     </div>
                     <div className={styles.fliDate}>
                       <div className={styles.time}>
-                        {e.duration.hours}h {e.duration.mins}m
+                        {diff(e.departure.scheduled,e.arrival.scheduled)}
                       </div>
-                      <div>{e.nonstop ? "0 Stop" : "1 Stop"}</div>
+                      <div>0 Stop</div>
                     </div>
                     <div className={styles.icFlDate}>
                       <div style={{ fontSize: "19px", fontWeight: "600" }}>
@@ -227,7 +223,7 @@ function Booking() {
                           src="https://cdn-icons-png.flaticon.com/512/3104/3104891.png"
                           alt="rupee-icon"
                         />
-                        {e.pricePerHead}
+                        {e.price}Rs.
                       </div>
                       <div>
                         <button className={styles.vbtn} onClick={handleVFair}>
@@ -301,9 +297,9 @@ function Booking() {
                               </td>
                               <td>
                                 <div>
-                                  <div>&#8377;{e.totalFare} </div>
+                                  <div>&#8377;{" "} </div>
                                   <div>
-                                    {" "}
+                                    {e.price}
                                     <button
                                       className={styles.vbtn}
                                       onClick={()=>{
@@ -337,10 +333,10 @@ function Booking() {
                               <td>
                                 <div>
                                   <div>
-                                    &#8377;{Math.floor(e.totalFare * 1.12)}{" "}
+                                    &#8377;{" "}
                                   </div>
                                   <div>
-                                    {" "}
+                                    {e.price + 1000}
                                     <button
                                       className={styles.vbtn}
                                       onClick={()=>{
@@ -384,35 +380,8 @@ function Booking() {
               ))}
             </div>
           </div>
-          <div className={styles.right_block}>
-            {/* array.map */}
-            {/* <div className="offers">
-              <div
-                style={{
-                  fontWeight: "700",
-                  margin: "20px",
-                  textAlignLast: "center",
-                  position: "relative",
-                }}
-              >
-                Today's Offers
-              </div>
-
-              {offers.map((e) => (
-                <div className={styles.repeatOffers}>
-                  <div className={styles.codeDiv}>
-                    {e.offerCode.toUpperCase()}
-                  </div>
-                  <div style={{ fontSize: "12px" }}>{e.flat}</div>
-                  <div style={{ color: "blue", fontSize: "14px" }}>
-                    Copy Code
-                  </div>
-                </div>
-              ))}
-            </div> */}
-          </div>
         </div>
-      </div>
+      </div> 
     </>
   );
 }

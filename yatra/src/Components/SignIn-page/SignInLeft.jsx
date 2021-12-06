@@ -7,6 +7,8 @@ import { v4 as uuid } from "uuid";
 import { fetchUser } from "./FetchUser";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { Redirect } from "react-router";
+import { Booking } from "../Booking-page/Booking";
+import { FlightDataContext } from "../../Contexts/FlightDataContext";
 
 const LeftStyles = styled.div`
     text-align: center;
@@ -87,7 +89,7 @@ function SignInLeft() {
     // const [isAuth, setIsAuth] = React.useState(false);
     // const [isLoading, setIsLoading] = React.useState(false);
     // const [isError, setIsError] = React.useState(false);
-
+    const {flightContextData} = useContext(FlightDataContext)
 
 
     const handleSubmit = (e) => {
@@ -104,7 +106,11 @@ function SignInLeft() {
         })
     };
     if(redirectToHome){
-        return <Redirect to="/"/>
+        if (flightContextData.length === 0) {
+            return <Redirect to="/"/>
+        } else {
+            return <Redirect to="/booking"/>
+        }
     }
 
     return (

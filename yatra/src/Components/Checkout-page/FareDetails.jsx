@@ -56,13 +56,13 @@ function FareDetails() {
             <FareDiv>
             <h3>Fare Details</h3>
                 <div>
-                    <div>Base Fare (₹{flightDetails.pricePerHead} Per Traveller)</div>
-                    <div> ₹ {flightDetails.totalFare} </div>
+                    <div>Base Fare (₹{flightDetails.price} Per Traveller)</div>
+                    <div> ₹ {flightDetails.price + 1000} </div>
                 </div>
 
                 <div>
                     <div>Fees & Surcharges</div>
-                    <div> ₹ {flightDetails.totalFare - flightDetails.pricePerHead} </div>
+                    <div> ₹ {flightDetails.price + 500} </div>
                 </div>
                 {/* <div className="totalFare">
                     <div>Total Fare</div>
@@ -70,7 +70,7 @@ function FareDetails() {
                 </div> */}
                 <div className="youPay">
                     <div>You Pay:</div>
-                    <div> ₹ {flightDetails.totalFare} </div>
+                    <div> ₹ {flightDetails.price + 1000} </div>
                 </div>
 
             </FareDiv>

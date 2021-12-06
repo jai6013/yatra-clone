@@ -5,12 +5,11 @@ import {BookingDetailsContext} from "../../Contexts/BookingDetailsContext";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { useContext, useState } from "react";
 import { Redirect } from "react-router";
+import axios from "axios";
 
 const Payment = () => {
   const {flightDetails} = useContext(BookingDetailsContext);
   const {user} = useContext(AuthContext);
-  console.log(user);
-  console.log(flightDetails);
   const [redirect, setRedirect] = useState(false);
   const arr = [
     {
@@ -115,10 +114,10 @@ const Payment = () => {
             </div>
             <br />
             <div className={styles.PriceAndButton}>
-              <div className={styles.PriceAmount}> &#8377; {flightDetails.totalFare}</div>
+              <div className={styles.PriceAmount}> &#8377; {flightDetails.price + 1000 + 130}</div>
               <button className={styles.PayButton} onClick={() => {
                 //TODO: Save booking data in db with user id
-                var axios = require('axios');
+                
                 var data = JSON.stringify({"user":{...user}, "booking":{...flightDetails}});
                 
                 var config = {
@@ -152,9 +151,9 @@ const Payment = () => {
             <div className={styles.DetailCard}>
                 Payment Details
                 <ul>
-                    <li><div>Total flight price</div> <div> &#8377; {flightDetails.totalFare}</div> </li>
-                    <li><div>Convenience fee</div> <div> &#8377; 0</div> </li>
-                    <li><div>You Pay</div> <div> &#8377; {flightDetails.totalFare}</div> </li>
+                    <li><div>Total flight price</div> <div> &#8377; {flightDetails.price + 1000}</div> </li>
+                    <li><div>Convenience fee</div> <div> &#8377; 130</div> </li>
+                    <li><div>You Pay</div> <div> &#8377; {flightDetails.price + 1000 + 130}</div> </li>
                     <li><div>Earn <span style={{color:'rgb(219, 203, 57)'}}> eCash</span> </div> <div> &#8377; 250</div> </li>
                 </ul>
             </div>

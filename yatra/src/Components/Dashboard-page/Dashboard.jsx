@@ -12,45 +12,28 @@ import CreateIcon from "@mui/icons-material/Create";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { useContext, useEffect, useState } from "react";
-// import {useContext} from 'react'
-// import {FlightDataContext} from '../../Contexts/FlightDataContext'
+import axios from "axios";
+
 const Dashboard = () => {
-    // const {flightContextData, handleFlightContextDataChange} = useContext(FlightDataContext)
   const {user} = useContext(AuthContext);
   const [userData, setUserData] = useState([]);
+  
   useEffect(() => {
     //load bookings for user
-    var axios = require('axios');
-
-    var config = {
-      method: 'get',
-      url: 'http://localhost:2345/bookings',
-      headers: { 
-        'Content-Type': 'application/json'
-      },
-    };
-
-    axios(config)
+    
+    axios.get(`http://localhost:2345/bookings/user/${user._id}`)
     .then(function (response) {
-      let data = findUserBookings(user._id, response.data);
-      setUserData([...data]);
-      console.log(userData);
+      console.log(response.data)
+      setUserData([...response.data]);
+     
     })
     .catch(function (error) {
       console.log(error);
     });
 
-  }, [])
+  }, [user])
 
-  const findUserBookings = (userId, bookings) => {
-      const userBookings = [];
-      for(let i=0; i<bookings.length; i++){
-        if(bookings[i].user._id === userId){
-          userBookings.push(bookings[i]);
-        }
-      }
-      return userBookings;
-  }
+
   const arr = [
     "ALL",
     "FLIGHTS",
@@ -135,35 +118,15 @@ const Dashboard = () => {
                   
                     return <div style={{backgroundColor:"whitesmoke",borderRadius:"5px", padding:"10px",margin:"10px"}} className={styles.BookingListItem}>
                       
-                      <h1>{item.booking.departure.dateShort}</h1>
-                      <h2>Travel From : {item.booking.origin}</h2>
-                      <h2>Going To : {item.booking.destination}</h2>
-                      <h2>Price Per Head : {item.booking.pricePerHead}</h2>
-                      <h2>Travellers : {item.booking.travellers.adults +item.booking.travellers.infants +item.booking.travellers.kids}</h2>
-                      <h2>Total Cost : {item.booking.totalFare}</h2>
+                      <h1>{item.booking.departure.scheduled}</h1>
+                      <h2>Travel From : {item.booking.departure.airport}</h2>
+                      <h2>Going To : {item.booking.arrival.airport}</h2>
+                      <h2>Price Per Head : {item.booking.price}</h2>
+                      <h2>Travellers : 1</h2>
+                      <h2>Total Cost : {item.booking.price + 1130}</h2>
                     </div>;
                   })}
               </div>
-              {/* <br />
-              <div className={styles.PaymentProcedures}>here to write</div>
-              <div className={styles.inputBoxContainer}>
-                <div>virtual Payment Adress</div>
-                <br />
-                <input type="text" className={styles.inputBox} />
-              </div>
-              <br />
-              <div className={styles.PriceAndButton}>
-                <div className={styles.PriceAmount}> &#8377; 5806</div>
-                <button className={styles.PayButton}>Pay Now</button>
-              </div> */}
-
-              {/* <div className={styles.PlaneText}>
-                By clicking on Pay now You are agree to our{" "}
-                <span className={styles.Terms}>Terms and Conditons</span> ,{" "}
-                <span className={styles.Terms}>Privacy Policy</span> ,
-                <span className={styles.Terms}> User Agreement</span> and{" "}
-                <span className={styles.Terms}>Covid-19 Guidelines</span>{" "}
-              </div> */}
             </div>
           </div>
 
@@ -176,7 +139,7 @@ const Dashboard = () => {
                   </div>{" "}
                 </li>
                 <li>
-                  <div>{`${user.firstName} ${user.lastName}`}</div>
+                  <div>{user.firstName && user.lastName ? `${user.firstName} ${user.lastName}`: `${user.firstName}`}</div>
                 </li>
 
                 <li>

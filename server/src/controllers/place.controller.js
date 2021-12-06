@@ -69,49 +69,18 @@ router.get("/search/:place", function (req, res) {
           'x-rapidapi-host': TRIPADVISOR_API_HOST,
           'x-rapidapi-key': TRIPADVISOR_API_KEY
         }
-      };
-      
-      axios.request(options).then(function (response) {
-          const airport = response.data[0].display_sub_title;
+      }; 
+      try{
 
-          //Get Place data and construct custom data
-          try {
-            const place = capitalize(req.params.place);
-            var options = {
-              method: 'GET',
-              url: `https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/autosuggest/v1.0/IN/INR/en-US/`,
-              params: {query: place},
-              headers: {
-                'x-rapidapi-host': SKYSCANNER_API_HOST,
-                'x-rapidapi-key': SKYSCANNER_API_KEY
-              }
-            };
-            
-            axios.request(options).then(function (response) {
-                const placeData = searchPlace(response.data.Places, place);
-                if(!placeData){
-                    return res.status(404).send("Not found.");
-                }
-                const placeObj = {
-                    placeName : placeData.PlaceName,
-                    airportName : airport, 
-                    placeCode : placeData.PlaceId.split("-")[0],
-                    countryName: placeData.CountryName,
-                    apiCode: placeData.PlaceId
-                }
-                return res.status(200).send(placeObj);
-            }).catch(function (error) {
-                console.error(error);
-                return res.status(400).send(error);
-            });
-        }
-        catch (err) {
-            return res.status(400).send(err.message);
+          axios.request(options).then(function (response) {
+              const airport = response.data[0];
+              console.log("workng",airport)
+              res.status(200).send(airport)
+            })
+        }catch(err){
+            res.status(400).send(err)
         }
 
-      }).catch(function (error) {
-          console.error(error);
-      });
 })
 
 

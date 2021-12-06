@@ -5,8 +5,6 @@ import { FareDetails } from "./FareDetails";
 import { FlightReview } from "./FlightReview";
 import { Promocode } from "./Promocode";
 import { TravellerDetails } from "./TravellerDetails";
-import {FlightDataContext} from '../../Contexts/FlightDataContext'
-import { Redirect } from "react-router-dom";
 
 const CheckoutDiv = styled.div`
     display: flex;

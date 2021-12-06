@@ -28,9 +28,8 @@ const Heading = styled.div`
 
 function FlightReview() {
     const {flightDetails} = useContext(BookingDetailsContext)
-    var data = []
-    data.push(flightDetails)
-    console.log("data print", data)
+    const [data,setData] = useState(flightDetails)
+    console.log(data)
     const [vFair,setVFair] = useState(false)
 
     const handleVFair = ()=>{
@@ -48,32 +47,31 @@ function FlightReview() {
                 <div>Review Your Booking</div>
             </Heading>
             <div className={styles.flightmain} style={{maxWidth: "780px", boxShadow: "0 2px 4px 0 #c8c8c8"}}>
-                {data.map((e) => (
                     <div className={styles.flights}>
                         <div className={styles.up_section}>
                             <div className={styles.icFlDate}>
                                 <div>
                                     <img
                                         width="20px"
-                                        src={e.airplane.logo}
+                                        src="https://cdn4.iconfinder.com/data/icons/aiga-symbol-signs/444/aiga_departingflights-512.png"
                                         alt="carrier-icon"
                                     />
                                 </div>
                                 <div className={styles.fliDate}>
-                                    <div style={{ fontWeight: "bold" }}>{e.airplane.name}</div>
+                                    <div style={{ fontWeight: "bold" }}>{data.airline.name}</div>
                                 </div>
                             </div>
                             <div className={styles.fliDate}>
-                                <div className={styles.time}>{e.departure.time}</div>
-                                <div>{e.origin}</div>
+                                <div className={styles.time}>{data.departure.scheduled}</div>
+                                <div>{data.departure.airport}</div>
                             </div>
                             <div className={styles.fliDate}>
-                                <div className={styles.time}>{e.arrival}</div>
-                                <div>{e.destination}</div>
+                                <div className={styles.time}>{data.arrival.scheduled}</div>
+                                <div>{data.arrival.airport}</div>
                             </div>
                             <div className={styles.fliDate}>
                                 <div className={styles.time}>
-                                    {e.duration.hours} {e.duration.mins}m
+                                    {1}h {2}m
                                 </div>
                                 <div>0 stop</div>
                             </div>
@@ -84,20 +82,17 @@ function FlightReview() {
                                         src="https://cdn-icons-png.flaticon.com/512/3104/3104891.png"
                                         alt="rupee-icon"
                                     />
-                                    {e.pricePerHead}
+                                    {data.price}
                                 </div>
-                                {/* <div>
-                                    <button onClick={handleVFair} className={styles.vbtn}>View Fares</button>
-                                </div> */}
+                                
                             </div>
                         </div>
                         {vFair ? (<div className={styles.viewFair}>
-                            Total fair : {e.totalFare}
+                            Total fair : {data.price + 1000}
                         </div>) : <div></div>}
                     </div>
 
-                ))}
-            </div>
+            </div> 
         </>
     );
 }

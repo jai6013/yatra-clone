@@ -9,7 +9,8 @@ import DirectionsBusIcon from "@material-ui/icons/DirectionsBus";
 import LocalTaxiIcon from "@material-ui/icons/LocalTaxi";
 import TrainOutlinedIcon from "@material-ui/icons/TrainOutlined";
 import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import { Redirect } from "react-router-dom";
+import { Link, Redirect } from "react-router-dom";
+import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 // import tr from "date-fns/esm/locale/tr/index.js";
 const Navbar = () => {
   const [AccountInfo,setAccountInfo] =useState(false)
@@ -22,6 +23,7 @@ const Navbar = () => {
     {
       id: 1,
       icon: <FlightIcon className={styles.Icons} />,
+
       label: "flighs"
     },
     {
@@ -60,17 +62,19 @@ const Navbar = () => {
   if(redirectToDashboard){
     return <Redirect to={`/dashboard`} />
   }
+
   return (
     <header className={styles.MainHeader}>
       <div className={styles.header}>
-        <div className={styles.AppLogo}></div>
+       <div className={styles.AppLogo}></div>
+
         <div className={styles.IconsAndTextWraper}>
           {visibleIcons.map((item) => {
             return (
-              <div className={styles.IconsAndText}>
+              <Link to="/"><div  className={styles.IconsAndText}>
                 <div className={styles.Icons}>{item.icon}</div>
                 <div className={styles.Text}>{item.label}</div>
-              </div>
+              </div></Link>
             );
           })}
           <div className={styles.MoreIconsAndText}>
@@ -106,7 +110,7 @@ const Navbar = () => {
               AccountInfo?<div className={styles.AccountInfo}>
                 <div className={styles.ImageBookingAndRefund}>
                   <div>
-                    {/* <AccountCircleOutlinedIcon /> */}
+                    <AccountCircleOutlinedIcon />
                   </div>
                   {token? (<div onClick={()=>setRedirectToDashboard(true)}>My Dashboard</div>):<div></div>}
                   <div>My Refund</div>
@@ -117,7 +121,7 @@ const Navbar = () => {
                   <button onClick={()=>{setRedirectToLogin(true)}}>LogIn</button>
                   <button onClick={()=>{setRedirectToSignUp(true)}}>SignUp</button>
                 </div>}
-              </div>:<div></div>
+              </div>:null
             }
     </header>
   );

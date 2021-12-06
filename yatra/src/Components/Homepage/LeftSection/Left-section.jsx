@@ -10,11 +10,8 @@ function Leftsection() {
   const [countAdult, setAdultCount] = useState(0);
   const [countChild, setChildCount] = useState(0);
   const [countInfant, setInfantCount] = useState(0);
-  const [departureInfo, setDepartureInfo] = useState({});
-  const [destinationInfo, setDestinationInfo] = useState({});
   const {flightContextData, handleFlightContextDataChange} = useContext(FlightDataContext);
   const [redirectToBookings, setRedirectToBookings] = useState(false);
-
   const handleDateChange = (date) => {
     date = new Date(date).toISOString();
     var any = date.split("T")[0];
@@ -22,6 +19,8 @@ function Leftsection() {
   };
 
   const initValue = {
+    cityName1: "",
+    cityName2: "",
     origin: "",
     originCode: "",
     destination: "",
@@ -36,6 +35,7 @@ function Leftsection() {
   };
   
   const [flightBookingData, setFlightBookingData] = useState(initValue);
+  
 
   const getDeparturePlaceData = ()  => {
     //Returns data from Places search API
@@ -49,9 +49,8 @@ function Leftsection() {
     axios(config)
       .then(function (response) {
         //after recieving place data set departure info
-        console.log(response.data);
-        handleDepartureInfo(response.data);
-
+        
+        setFlightBookingData({...flightBookingData, origin: response.data.display_sub_title, originCode:response.data.code, cityName1:response.data.city_name});
       })
       .catch(function (error) {
         console.log(error);
@@ -63,12 +62,12 @@ function Leftsection() {
       setFlightBookingData({ ...flightBookingData, [name]: value });
   };
 
-  const handleDepartureInfo = (data) => {
-    //set departure info from Place Search API
+  // const handleDepartureInfo = (data) => {
+  //   //set departure info from Place Search API
 
-    setDepartureInfo({...data});
-    setFlightBookingData({...flightBookingData, originCode: data.apiCode});
-  }
+  //   setDepartureInfo({...data});
+  //   setFlightBookingData({...flightBookingData, originCode: data.apiCode});
+  // }
   const getDestinationPlaceData = ()  => {
     //Returns data from Places search API
 
@@ -81,65 +80,30 @@ function Leftsection() {
     axios(config)
       .then(function (response) {
         //after recieving place data set destination info
-        console.log(response.data);
-        handleDestinationInfo(response.data);
-
+        setFlightBookingData({...flightBookingData, destination: response.data.display_sub_title, destinationCode:response.data.code, cityName2:response.data.city_name});
       })
       .catch(function (error) {
         console.log(error);
       });    
   }
-  const handleDestinationInfo = (data) => {
-    //set destination info from Place Search API
-    setDestinationInfo({...data});
-    setFlightBookingData({...flightBookingData, destinationCode: data.apiCode});
-  }
 
   const searchFlights = () => {
+    console.log(flightBookingData.originCode, flightBookingData.destinationCode)
     //fetch flight data
-    var data = JSON.stringify({...flightBookingData});
-    var config = {
-      method: 'post',
-      url: 'http://localhost:2345/flights/search/oneway',
-      headers: { 
-        'Content-Type': 'application/json'
-      },
-      data: data
-    };
-    
-    axios(config)
-    .then(function (response) {
+    axios.get(`http://api.aviationstack.com/v1/flights?access_key=b21a8c0241e13dd99ed2e32b083ecae4&dep_iata=${flightBookingData.originCode}&arr_iata=${flightBookingData.destinationCode}`)
 
-        //combine results
-        var data = JSON.stringify({...flightBookingData});
-        var config = {
-          method: 'post',
-          url: 'http://localhost:2345/flights/search/oneway/all',
-          headers: { 
-            'Content-Type': 'application/json'
-          },
-          data: data
-        };
-        
-        axios(config)
-        .then(function (allResponse) {
-
-          //combine data and update context
-          handleFlightContextDataChange(response.data.concat(allResponse.data));
-
-          //redirect to results
-          setRedirectToBookings(true);
-
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
-
-    })
-    .catch(function (error) {
-      console.log(error);
-    });
-    
+    .then((res)=> {
+    // console.log(res.data.data)      
+      const data = res.data.data;
+      data.map((e) =>
+        e.price = Math.floor(Math.random()*(5000 - 2500) + 2500)
+      )
+      return handleFlightContextDataChange(data)
+    }
+    )
+    setTimeout(() => {    
+      setRedirectToBookings(true)
+    }, 3000); 
   }
   if(redirectToBookings){
     return <Redirect to={`/booking`}/>
@@ -166,14 +130,14 @@ function Leftsection() {
               <div style={{ width: "50%", textAlign: "left", fontSize: "12px", color: "#3b3b3b", marginTop: "5px", marginBottom: "8px" }}>
                 <div>
                   {
-                    departureInfo.airportName ? `${departureInfo.airportName}` : "Chhatrapati Shivaji (BOM)"
+                    flightBookingData.origin !== "" ? `${flightBookingData.origin}` : "Chhatrapati Shivaji (BOM)"
                   }
                 </div>
               </div>
               <div style={{ fontSize: "18px", fontWeight: "700" }}>
                 
                 {
-                  departureInfo.placeName ? `${departureInfo.placeName}` : "Mumbai"
+                  flightBookingData.cityName1 !== "" ? `${flightBookingData.cityName1}` : "Mumbai"
                 }
 
               </div>
@@ -203,12 +167,12 @@ function Leftsection() {
               <div style={{ fontSize: "14px", color: "#A19F9D" }}>Going To</div>
               <div style={{ width: "50%", textAlign: "right", fontSize: "12px", color: "#3b3b3b", marginTop: "5px", marginBottom: "8px" }}>
                 {
-                  destinationInfo.airportName ? `${destinationInfo.airportName}` : "Lohegaon (PNQ)"
+                  flightBookingData.destination ? `${flightBookingData.destination}` : "Lohegaon (PNQ)"
                 }
               </div>
               <div style={{ fontSize: "18px", fontWeight: "700" }}>
                 {
-                  destinationInfo.placeName ? `${destinationInfo.placeName}` : "Pune"
+                  flightBookingData.cityName2 ? `${flightBookingData.cityName2}` : "Pune"
                 }
               </div>
               <input

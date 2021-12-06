@@ -10,15 +10,15 @@ import { BookingDetailsProvider } from './Contexts/BookingDetailsContext';
 
 ReactDOM.render(
   <React.StrictMode>
+    <FlightDataProvider>
     <BrowserRouter>
     <AuthProvider>
-    <FlightDataProvider>
       <BookingDetailsProvider>
       <Routes/>  
       </BookingDetailsProvider>
-    </FlightDataProvider>  
     </AuthProvider>
     </BrowserRouter>
+    </FlightDataProvider>  
   </React.StrictMode>,
   document.getElementById('root')
 );

@@ -73,8 +73,11 @@ router.delete("/:id", async function(req, res) {
 
 //get all Booking of a user
 router.get("/user/:id", async function (req, res) {
+    console.log(req.params.id)
     try {
-        const bookings = await Booking.find({user: req.params.id}).lean().exec();
+        const bookings = await Booking.find().lean().exec();
+        bookings.filter(e => e.user._id === req.params.id)
+        console.log(bookings)
         return res.status(200).send(bookings);
     }
     catch (err) {

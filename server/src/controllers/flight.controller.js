@@ -10,67 +10,6 @@ const express = require("express");
 const router = express.Router();
 
 
-//Http Verbs
-
-// get flight price for oneway
-router.post("/search/oneway", async function (req, res) {
-
-    /* TODO:
-        0. construct payload for skyscanner
-        1. fetch flight data from skyscanner 
-        2. based on request dates filter data from api response
-        3. construct custom object with refined flight data
-        4. send response with custom object
-    */
-    try {
-        //REQUEST SKYSCANNER
-
-        //SKYSCANNER PAYLOAD
-        const countryCode = "IN";
-        const currencyCode = "INR";
-        const locale = "en-US";
-        const originPlace = req.body.originCode;
-        const destinationPlace = req.body.destinationCode;
-        const departureDate = req.body.departureDate;
-
-        var options = {
-            method: 'GET',
-            url: `https://skyscanner-skyscanner-flight-search-v1.p.rapidapi.com/apiservices/browsequotes/v1.0/${countryCode}/${currencyCode}/${locale}/${originPlace}/${destinationPlace}/${departureDate}`,
-            headers: {
-            'x-rapidapi-host': SKYSCANNER_API_HOST,
-            'x-rapidapi-key': SKYSCANNER_API_KEY
-            }
-        };
-        
-        axios.request(options).then(function (response) {
-            
-            //error handling
-            if(response.data.Quotes.length === 0){
-                //if route not found then return all data
-                return res.status(404).send("Data invalid or not available");
-            }
-
-            //get airplane specific details from db
-            axios.get(`http://${HOST}:${PORT}/airplanes`).then(function (airplaneData) {
-
-                //Construct response object
-                const customObj = constructFlightDataResponse(req.body, response.data.Quotes, response.data.Carriers, airplaneData.data);
-                return res.status(200).send(customObj);
-            }).catch(function (error) {
-                //console.error(error);
-            }); 
-
-
-        }).catch(function (error) {
-            //console.log(error);
-            return res.status(404).send("Data invalid or unavailable.");
-        });        
-    } catch (error) {
-        //console.log(error);
-        return res.status(404).send("Data invalid or unavailable.");
-    }
-
-})
 
 //get all flight prices
 router.post("/search/oneway/all", function (req, res) {
