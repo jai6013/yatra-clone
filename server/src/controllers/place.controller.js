@@ -1,8 +1,5 @@
 //PLACE CONTROLLER
 var axios = require("axios").default;
-//API keys
-const { SKYSCANNER_API_HOST, SKYSCANNER_API_KEY } = require("../config/dbconfig.js");
-const { TRIPADVISOR_API_HOST, TRIPADVISOR_API_KEY } = require("../config/dbconfig.js");
 
 //create a router
 const express = require("express");
@@ -66,8 +63,9 @@ router.get("/search/:place", function (req, res) {
         url: 'https://travel-advisor.p.rapidapi.com/airports/search',
         params: {query: req.params.place, locale: 'en_US'},
         headers: {
-          'x-rapidapi-host': TRIPADVISOR_API_HOST,
-          'x-rapidapi-key': TRIPADVISOR_API_KEY
+          'x-rapidapi-host': "travel-advisor.p.rapidapi.com",
+          'x-rapidapi-key': "1aaf509890mshdf5875ff569dc0ap1a6a36jsn5ef23f045ff9"
+
         }
       }; 
       try{
@@ -105,22 +103,6 @@ router.delete("/:id", async function(req, res) {
         return res.status(400).send(err.message);
     }
 })
-
-
-//UTILITIES
-function searchPlace(places){
-    for(let i=0; i<places.length; i++){
-        if(places[i].CountryName === "India"){
-            return places[i];
-        }
-    }
-}
-function capitalize(str){
-    let arr = str.split("");
-    arr[0] = arr[0].toUpperCase();
-    return arr.join("");
-}
-
 
 //export
 module.exports = router;
