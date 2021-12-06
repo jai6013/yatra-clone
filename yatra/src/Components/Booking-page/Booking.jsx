@@ -19,6 +19,7 @@ import ArrowUpwardSharpIcon from "@mui/icons-material/ArrowUpwardSharp";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { BookingDetailsContext } from "../../Contexts/BookingDetailsContext";
 import axios from "axios";
+import API from "../Utility/key";
 // import { FilterMenuDiv } from "./FilterMenu";
 
 
@@ -47,7 +48,7 @@ function Booking() {
   const [check, setCheck] = useState(false)
   const [redirectToBookings, setRedirectToBookings] = useState(false);
   const { token } = useContext(AuthContext)
-
+  
   
   
 
@@ -100,7 +101,7 @@ function Booking() {
   const searchFlights = () => {
     console.log(flightBookingData.originCode, flightBookingData.destinationCode)
     //fetch flight data
-    axios.get(`http://api.aviationstack.com/v1/flights?access_key=aa6f4adcbec0698dd8eef032c4bffc36&dep_iata=${flightBookingData.originCode}&arr_iata=${flightBookingData.destinationCode}`)
+    axios.get(`http://api.aviationstack.com/v1/flights?access_key=${API}&dep_iata=${flightBookingData.originCode}&arr_iata=${flightBookingData.destinationCode}`)
 
     .then((res)=> {
     // console.log(res.data.data)      
