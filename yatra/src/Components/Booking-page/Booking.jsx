@@ -18,21 +18,104 @@ import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDown
 import ArrowUpwardSharpIcon from "@mui/icons-material/ArrowUpwardSharp";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { BookingDetailsContext } from "../../Contexts/BookingDetailsContext";
+import axios from "axios";
 // import { FilterMenuDiv } from "./FilterMenu";
 
 
 
-function Booking() {
-
-  const { flightContextData } = useContext(FlightDataContext)
-  console.log(flightContextData)
+const initValue = {
+  cityName1: "",
+  cityName2: "",
+  origin: "",
+  originCode: "",
+  destination: "",
+  destinationCode: "",
+  departureDate: "",
+  travellers: {
+    adults: 0,
+    kids: 0,
+    infants: 0,
+  },
+  travelClass: 0,
+};
+function Booking() { 
+  
+  const [flightBookingData, setFlightBookingData] = useState(initValue);
+  const { flightContextData, handleFlightContextDataChange } = useContext(FlightDataContext)
   const [data, setData] = useState(flightContextData)
   const { flightDetails, handleFlightDetails } = useContext(BookingDetailsContext)
   const [check, setCheck] = useState(false)
   const [redirectToBookings, setRedirectToBookings] = useState(false);
-
   const { token } = useContext(AuthContext)
 
+  
+  
+
+  const getDeparturePlaceData = ()  => {
+    //Returns data from Places search API
+
+    var config = {
+      method: "get",
+      url: `https://yaaatra-backend.herokuapp.com/places/search/${flightBookingData.origin}`,
+      headers: {},
+    };
+    
+    axios(config)
+    .then(function (response) {
+      //after recieving place data set departure info
+      
+      console.log(response.data.code,"code")
+      setFlightBookingData({...flightBookingData, origin: response.data.display_sub_title, originCode:response.data.code, cityName1:response.data.city_name});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });    
+  }
+
+  const handleFlightDataChange = (e) => {
+      const { name, value } = e.target;
+      setFlightBookingData({ ...flightBookingData, [name]: value });
+  };
+
+  const getDestinationPlaceData = ()  => {
+    //Returns data from Places search API
+
+    var config = {
+      method: "get",
+      url: `https://yaaatra-backend.herokuapp.com/places/search/${flightBookingData.destination}`,
+      headers: {},
+    };
+
+    axios(config)
+      .then(function (response) {
+        //after recieving place data set destination info
+        console.log(response.data.code,"code")
+        setFlightBookingData({...flightBookingData, destination: response.data.display_sub_title, destinationCode:response.data.code, cityName2:response.data.city_name});
+      })
+      .catch(function (error) {
+        console.log(error);
+      });    
+  }
+
+  const searchFlights = () => {
+    console.log(flightBookingData.originCode, flightBookingData.destinationCode)
+    //fetch flight data
+    axios.get(`http://api.aviationstack.com/v1/flights?access_key=aa6f4adcbec0698dd8eef032c4bffc36&dep_iata=${flightBookingData.originCode}&arr_iata=${flightBookingData.destinationCode}`)
+
+    .then((res)=> {
+    // console.log(res.data.data)      
+      const data = res.data.data;
+      data.map((e) =>
+        e.price = Math.floor(Math.random()*(5000 - 2500) + 2500)
+      )
+      setData(data)
+      handleFlightContextDataChange(data)
+    }
+    ) 
+  }
+  useEffect(()=>{
+    setData(flightContextData)
+  },[data])
   const format = (dateISOString) => {
     let date = new Date(dateISOString);
     let year = date.getFullYear();
@@ -60,15 +143,11 @@ function Booking() {
   }
   // const [showFilters, setShowFilters] = useState(false)
 
-
-  const [vFair, setVFair] = useState(false)
-
-  const handleVFair = () => {
-    if (vFair) {
-      setVFair(false)
-    } else {
-      setVFair(true)
-    }
+  const handleVFair = (id) => {
+    let temp = data.map((e) => e.id === id ? {...e, show : !e.show} : e)
+    console.log("tem",temp)
+    console.log("dat",data)
+    setData(temp)
   }
 
   if (check && token === "") {
@@ -100,7 +179,16 @@ function Booking() {
             </div>
             <div className={styles.sas}>
               <label>From</label>
-              <input type="text" name="originplace" placeholder="Mumbai(BOM)" />
+              <input name={"origin"}
+                onChange={handleFlightDataChange}
+                onKeyDown={(e) => {
+                  //on enter show results
+                  if (e.keyCode === 13 || e.key === "Tab") {
+                    getDeparturePlaceData();
+                  }
+                }}
+                type="text"
+               placeholder="Mumbai(BOM)" />
             </div>
             <div className={styles.sas}>
               <CompareArrowsOutlinedIcon />
@@ -108,8 +196,15 @@ function Booking() {
             <div className={styles.sas}>
               <label>To</label>
               <input
+                name={"destination"}
+                onChange={handleFlightDataChange}
+                onKeyDown={(e) => {
+                  //on enter show results
+                  if (e.keyCode === 13 || e.key === "Tab") {
+                    getDestinationPlaceData();
+                  }
+                }}
                 type="text"
-                name="destinationplace"
                 placeholder="New Delhi(DEL)"
               />
             </div>
@@ -122,7 +217,7 @@ function Booking() {
               />
             </div>
             <div className={styles.sas}>
-              <button className={styles.vbtn}>Search Again</button>
+              <button onClick={searchFlights} className={styles.vbtn}>Search Again</button>
             </div>
           </div>
         </div>
@@ -213,7 +308,7 @@ function Booking() {
                       </div>
                       <div>0 Stop</div>
                     </div>
-                    <div className={styles.icFlDate}>
+                    <div className={styles.icFlDate2}>
                       <div style={{ fontSize: "19px", fontWeight: "600" }}>
                         <img
                           width="15px"
@@ -223,13 +318,13 @@ function Booking() {
                         {e.price}
                       </div>
                       <div>
-                        <button className={styles.vbtn} onClick={handleVFair}>
+                        <button className={styles.vbtn} onClick={() => handleVFair(e.id)}>
                           View Fares
                         </button>
                       </div>
                     </div>
                   </div>
-                  {vFair ? (
+                  {e.show ? (
                     <div className={styles.viewFair}>
                       <div>
                         <table>

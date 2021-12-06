@@ -97,7 +97,7 @@ function Leftsection() {
     )
     setTimeout(() => {    
       setRedirectToBookings(true)
-    }, 3000); 
+    }, 4000); 
   }
   if(redirectToBookings){
     return <Redirect to={`/booking`}/>
@@ -138,9 +138,9 @@ function Leftsection() {
               <input
                 name={"origin"}
                 onChange={handleFlightDataChange}
-                onKeyUp={(e) => {
+                onKeyDown={(e) => {
                   //on enter show results
-                  if (e.keyCode === 13) {
+                  if (e.keyCode === 13 || e.key === "Tab") {
                     getDeparturePlaceData();
                   }
                 }}
@@ -172,9 +172,9 @@ function Leftsection() {
               <input
                 name={"destination"}
                 onChange={handleFlightDataChange}
-                onKeyUp={(e) => {
+                onKeyDown={(e) => {
                   //on enter show results
-                  if (e.keyCode === 13) {
+                  if (e.keyCode === 13 || e.key === "Tab") {
                     getDestinationPlaceData();
                   }
                 }}
