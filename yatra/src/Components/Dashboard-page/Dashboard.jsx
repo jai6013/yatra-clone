@@ -52,7 +52,6 @@ const Dashboard = () => {
     }
   },[token])
   return (
-    <div>
       <div className={styles.MainContainer}>
         <div className={styles.headerContainer}>
           <div className={styles.AppLogo}></div>
@@ -166,7 +165,6 @@ const Dashboard = () => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 export { Dashboard };
