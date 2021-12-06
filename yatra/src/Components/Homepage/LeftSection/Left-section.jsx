@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import styles from "./Css/Left-section.module.css";
 import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
 import { YatraDatePicker } from "./../../Utility/YatraDatePicker";
@@ -86,10 +86,15 @@ function Leftsection() {
     .then((res)=> {
       if(res.data){
         handleFlightContextDataChange(res.data)
-        setRedirectToBookings(true)
       }
     });
   }
+  useEffect(()=>{
+    if(flightContextData.length !== 0){
+      setRedirectToBookings(true)
+    }
+  },[redirectToBookings])
+  
   if(redirectToBookings){
     return <Redirect to={`/booking`}/>
   }
