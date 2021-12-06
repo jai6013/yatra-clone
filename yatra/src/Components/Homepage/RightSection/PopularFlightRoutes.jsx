@@ -117,7 +117,6 @@ const RouteItemStyle = styled.div`
 `;
 
 const RouteItem = ({ el }) => {
-    // console.log("props", el, el.price, el.from, el.to);
 
     return (
         <RouteItemStyle>
@@ -208,7 +207,7 @@ const internationalFlightRoutes = [
 
 function PopularFlightRoutes({ routeType }) {
     const [flightRouteArr, setFlightRouteArr] = React.useState(routeType === "domestic" ? domesticFlightRoutes : internationalFlightRoutes);
-    // console.log(routeType);
+
     return (
         <>
                 <Title>Popular {routeType} Flight Routes</Title>

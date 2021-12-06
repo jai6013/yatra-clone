@@ -18,79 +18,78 @@ import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDown
 import ArrowUpwardSharpIcon from "@mui/icons-material/ArrowUpwardSharp";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { BookingDetailsContext } from "../../Contexts/BookingDetailsContext";
-import { FilterMenuDiv } from "./FilterMenu";
-import { width } from "@mui/system";
+// import { FilterMenuDiv } from "./FilterMenu";
 
 
 
 function Booking() {
 
-    const {flightContextData} = useContext(FlightDataContext)
-    console.log(flightContextData)
-    const [data,setData] = useState(flightContextData)
-    const {flightDetails,handleFlightDetails} = useContext(BookingDetailsContext)
-    const [check,setCheck] = useState(false)
-    const [redirectToBookings, setRedirectToBookings] = useState(false);
-    
-    const {token} = useContext(AuthContext)
+  const { flightContextData } = useContext(FlightDataContext)
+  console.log(flightContextData)
+  const [data, setData] = useState(flightContextData)
+  const { flightDetails, handleFlightDetails } = useContext(BookingDetailsContext)
+  const [check, setCheck] = useState(false)
+  const [redirectToBookings, setRedirectToBookings] = useState(false);
 
-    const format =(dateISOString) =>{
-      let date = new Date(dateISOString);
-      let year = date.getFullYear();
-      let month = date.getMonth()+1;
-      let day = date.getDate();
-      let hour = date.getHours();
-      let minutes = date.getMinutes();
-        if (day < 10) {
-            date = '0' + date;
-        }
-        if (month < 10) {
-           month = '0' + month;
-        }
+  const { token } = useContext(AuthContext)
 
-        return `${day}/${month}/${year} - ${hour}:${minutes}`;
-
+  const format = (dateISOString) => {
+    let date = new Date(dateISOString);
+    let year = date.getFullYear();
+    let month = date.getMonth() + 1;
+    let day = date.getDate();
+    let hour = date.getHours();
+    let minutes = date.getMinutes();
+    if (day < 10) {
+      date = '0' + date;
     }
-    const diff = (first,second) =>{
-      let currentTime = new Date(first);
-      let expireTime = new Date(second);
-      let minutes = (expireTime - currentTime) / (1000 * 60);
-      let hours = Math.floor(minutes / 60);
-      minutes = minutes % 60;
-      return hours + "h " + minutes + "mn";
-    } 
-    // const [showFilters, setShowFilters] = useState(false)
-    
+    if (month < 10) {
+      month = '0' + month;
+    }
 
-  const [vFair,setVFair] = useState(false)
+    return `${day}/${month}/${year} - ${hour}:${minutes}`;
 
-  const handleVFair = ()=>{
-    if(vFair){
+  }
+  const diff = (first, second) => {
+    let currentTime = new Date(first);
+    let expireTime = new Date(second);
+    let minutes = (expireTime - currentTime) / (1000 * 60);
+    let hours = Math.floor(minutes / 60);
+    minutes = minutes % 60;
+    return hours + "h " + minutes + "mn";
+  }
+  // const [showFilters, setShowFilters] = useState(false)
+
+
+  const [vFair, setVFair] = useState(false)
+
+  const handleVFair = () => {
+    if (vFair) {
       setVFair(false)
-    }else{
-            setVFair(true)
-          }
+    } else {
+      setVFair(true)
+    }
   }
-  
-  if(check && token === ""){
-    return <Redirect to={`/signin`}/>
+
+  if (check && token === "") {
+    return <Redirect to={`/signin`} />
   }
-  
-  const handleBook = (flightData)=>{
+
+  const handleBook = (flightData) => {
     setCheck(true)
     handleFlightDetails(flightData)
     setTimeout(() => {
       setRedirectToBookings(true)
     }, 2000);
   }
-  if(redirectToBookings){
-    return <Redirect to={`/checkout`}/>
+  if (redirectToBookings) {
+    return <Redirect to={`/checkout`} />
   }
 
   return (
     <>
       <Navbar />
- 
+
       <div className={styles.main_box}>
         <div className={styles.searchAgain}>
           <div className={styles.search_block}>
@@ -166,17 +165,15 @@ function Booking() {
             {/* <h3>Showing Results for Departure Date {flightContextData[0].flight_date}</h3> */}
             <div className={styles.sort}>
               <div>SortBy</div>
-              <div className={styles.dad}>
-                <div>Depart</div>
-                <div>Arrive</div>
-                <div>Duration</div>
-              </div>
+              <div>Depart</div>
+              <div>Arrive</div>
+              <div>Duration</div>
               <div className="pr-up">
                 <div className={styles.filter} onClick={() => {
                   //Sort data 
-                         
+
                   let tempData = data;
-                  tempData.sort((a,b) => a - b);
+                  tempData.sort((a, b) => a - b);
                   setData([...tempData]);
 
                 }}>
@@ -192,12 +189,12 @@ function Booking() {
                       <div>
                         <img
                           width="20px"
-                          src = "https://cdn4.iconfinder.com/data/icons/aiga-symbol-signs/444/aiga_departingflights-512.png"
+                          src="https://cdn4.iconfinder.com/data/icons/aiga-symbol-signs/444/aiga_departingflights-512.png"
                           alt="carrier-icon"
                         />
                       </div>
                       <div className={styles.fliDate}>
-                        <div style={{ fontWeight: "bold"}}>
+                        <div style={{ fontWeight: "bold" }}>
                           {e.airline.name}
                         </div>
                       </div>
@@ -212,7 +209,7 @@ function Booking() {
                     </div>
                     <div className={styles.fliDate}>
                       <div className={styles.time}>
-                        {diff(e.departure.scheduled,e.arrival.scheduled)}
+                        {diff(e.departure.scheduled, e.arrival.scheduled)}
                       </div>
                       <div>0 Stop</div>
                     </div>
@@ -223,7 +220,7 @@ function Booking() {
                           src="https://cdn-icons-png.flaticon.com/512/3104/3104891.png"
                           alt="rupee-icon"
                         />
-                        {e.price}Rs.
+                        {e.price}
                       </div>
                       <div>
                         <button className={styles.vbtn} onClick={handleVFair}>
@@ -297,14 +294,12 @@ function Booking() {
                               </td>
                               <td>
                                 <div>
-                                  <div>&#8377;{" "} </div>
-                                  <div>
-                                    {e.price}
+                                  <div>&#8377;{" "} {e.price}
                                     <button
                                       className={styles.vbtn}
-                                      onClick={()=>{
+                                      onClick={() => {
                                         handleBook(e)
-                                        }}
+                                      }}
                                     >
                                       Book
                                     </button>
@@ -333,15 +328,12 @@ function Booking() {
                               <td>
                                 <div>
                                   <div>
-                                    &#8377;{" "}
-                                  </div>
-                                  <div>
-                                    {e.price + 1000}
+                                    &#8377;{" "} {e.price + 1000}
                                     <button
                                       className={styles.vbtn}
-                                      onClick={()=>{
+                                      onClick={() => {
                                         handleBook(e)
-                                        }}
+                                      }}
                                     >
                                       Book
                                     </button>
@@ -381,7 +373,7 @@ function Booking() {
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </>
   );
 }

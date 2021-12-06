@@ -86,7 +86,7 @@ function SignUpLeft() {
     const handleSubmit = (e) => {
         e.preventDefault();
 
-        axios.post(`http://localhost:2345/users`, {
+        axios.post(`https://yaaatra-backend.herokuapp.com/users`, {
             "firstName":firstName,
             "lastName":lastName,
             "phone": phone,

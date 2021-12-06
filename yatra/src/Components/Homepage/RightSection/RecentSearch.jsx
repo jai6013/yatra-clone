@@ -5,7 +5,7 @@ import YatraCloseIcon, { CloseStyles } from "../../Utility/YatraCloseIcon";
 import YatraFlightIcon from "../../Utility/YatraFlightIcon";
 
 const handleClose = (id) => {
-    console.log("is deleted");
+    console.log(id, "is deleted");
     return 1;
 }
 
@@ -142,7 +142,6 @@ const tempStyles = {
 }
 
 const Item = ({ el }) => {
-    console.log("props", el, el.cardType, el.icon_type, el.date, el.from, el.to);
 
     return (
         <ItemStyle>
@@ -220,7 +219,7 @@ const tempSearches = [
 
 function RecentSearch() {
     const [searches, setSearches] = React.useState(tempSearches);
-    console.log(searches, searches.length);
+
     return searches.length === 0
         ? null
         : (

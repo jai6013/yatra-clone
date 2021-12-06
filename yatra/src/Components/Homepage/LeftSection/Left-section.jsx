@@ -42,7 +42,7 @@ function Leftsection() {
 
     var config = {
       method: "get",
-      url: `http://localhost:2345/places/search/${flightBookingData.origin}`,
+      url: `https://yaaatra-backend.herokuapp.com/places/search/${flightBookingData.origin}`,
       headers: {},
     };
 
@@ -62,18 +62,12 @@ function Leftsection() {
       setFlightBookingData({ ...flightBookingData, [name]: value });
   };
 
-  // const handleDepartureInfo = (data) => {
-  //   //set departure info from Place Search API
-
-  //   setDepartureInfo({...data});
-  //   setFlightBookingData({...flightBookingData, originCode: data.apiCode});
-  // }
   const getDestinationPlaceData = ()  => {
     //Returns data from Places search API
 
     var config = {
       method: "get",
-      url: `http://localhost:2345/places/search/${flightBookingData.destination}`,
+      url: `https://yaaatra-backend.herokuapp.com/places/search/${flightBookingData.destination}`,
       headers: {},
     };
 
@@ -90,7 +84,7 @@ function Leftsection() {
   const searchFlights = () => {
     console.log(flightBookingData.originCode, flightBookingData.destinationCode)
     //fetch flight data
-    axios.get(`http://api.aviationstack.com/v1/flights?access_key=b21a8c0241e13dd99ed2e32b083ecae4&dep_iata=${flightBookingData.originCode}&arr_iata=${flightBookingData.destinationCode}`)
+    axios.get(`http://api.aviationstack.com/v1/flights?access_key=aa6f4adcbec0698dd8eef032c4bffc36&dep_iata=${flightBookingData.originCode}&arr_iata=${flightBookingData.destinationCode}`)
 
     .then((res)=> {
     // console.log(res.data.data)      

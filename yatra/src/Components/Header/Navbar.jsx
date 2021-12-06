@@ -13,12 +13,11 @@ import { Link, Redirect } from "react-router-dom";
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 // import tr from "date-fns/esm/locale/tr/index.js";
 const Navbar = () => {
-  const [AccountInfo,setAccountInfo] =useState(false)
-  const {token,handleTokenChange,user} = useContext(AuthContext)
+  const [AccountInfo, setAccountInfo] = useState(false)
+  const { token, handleTokenChange, user } = useContext(AuthContext)
   const [redirectToLogin, setRedirectToLogin] = useState(false);
-  const[redirectToSignUp,setRedirectToSignUp] = useState(false);
-  const[redirectToDashboard,setRedirectToDashboard] = useState(false);
-  console.log(token,user)
+  const [redirectToSignUp, setRedirectToSignUp] = useState(false);
+  const [redirectToDashboard, setRedirectToDashboard] = useState(false);
   const visibleIcons = [
     {
       id: 1,
@@ -51,30 +50,32 @@ const Navbar = () => {
       icon: <TrainOutlinedIcon className={styles.Icons} />,
       label: "Train"
     }
-  ]; 
+  ];
 
-  if(redirectToLogin){
-    return <Redirect to={`/signin`}/>
+  if (redirectToLogin) {
+    return <Redirect to={`/signin`} />
   }
-  if(redirectToSignUp){
-    return <Redirect to={`/signup`}/>
+  if (redirectToSignUp) {
+    return <Redirect to={`/signup`} />
   }
-  if(redirectToDashboard){
+  if (redirectToDashboard) {
     return <Redirect to={`/dashboard`} />
   }
 
   return (
     <header className={styles.MainHeader}>
       <div className={styles.header}>
-       <div className={styles.AppLogo}></div>
+        <div className={styles.AppLogo}></div>
 
         <div className={styles.IconsAndTextWraper}>
           {visibleIcons.map((item) => {
             return (
-              <Link to="/"><div  className={styles.IconsAndText}>
+              <Link to="/">
+                <div className={styles.IconsAndText}>
                 <div className={styles.Icons}>{item.icon}</div>
                 <div className={styles.Text}>{item.label}</div>
-              </div></Link>
+                </div>
+              </Link>
             );
           })}
           <div className={styles.MoreIconsAndText}>
@@ -94,8 +95,8 @@ const Navbar = () => {
           </div>
         </div>
         <div className={styles.OtherInformationWrapper}>
-          <div className={styles.myAccountWrapper} onClick={()=>{setAccountInfo(!AccountInfo)}}>
-            {token? user.firstName:"My Account"}
+          <div className={styles.myAccountWrapper} onClick={() => { setAccountInfo(!AccountInfo) }}>
+            {token ? user.firstName : "My Account"}
             <ArrowDropDownIcon className={styles.ArrowDown} />
           
           </div>
@@ -106,24 +107,25 @@ const Navbar = () => {
           <div className={styles.OtherInformation}>Yatra for Buses </div>
         </div>
       </div>
-            {
-              AccountInfo?<div className={styles.AccountInfo}>
-                <div className={styles.ImageBookingAndRefund}>
-                  <div>
-                    <AccountCircleOutlinedIcon />
-                  </div>
-                  {token? (<div onClick={()=>setRedirectToDashboard(true)}>My Dashboard</div>):<div></div>}
-                  <div>My Refund</div>
-                </div>
-                {token ? <div className={styles.TwoButtons} style={{display:'inline-flex',marginTop:'20px'}}>
-                  <button onClick={()=>{handleTokenChange("")}}>LogOut</button>
-                </div> : <div className={styles.TwoButtons} style={{display:'inline-flex',marginTop:'20px'}}>
-                  <button onClick={()=>{setRedirectToLogin(true)}}>LogIn</button>
-                  <button onClick={()=>{setRedirectToSignUp(true)}}>SignUp</button>
-                </div>}
-              </div>:null
-            }
+      {
+        AccountInfo ? <div className={styles.AccountInfo}>
+          <div className={styles.ImageBookingAndRefund}>
+            <div>
+              <AccountCircleOutlinedIcon />
+            </div>
+            {token ? (<div onClick={() => setRedirectToDashboard(true)}>My Dashboard</div>) : <div></div>}
+            <div>My Refund</div>
+          </div>
+          {token ? <div className={styles.TwoButtons} style={{ display: 'inline-flex', marginTop: '20px' }}>
+            <button onClick={() => { handleTokenChange("") }}>LogOut</button>
+          </div> : <div className={styles.TwoButtons} style={{ display: 'inline-flex', marginTop: '20px' }}>
+            <button onClick={() => { setRedirectToLogin(true) }}>LogIn</button>
+            <button onClick={() => { setRedirectToSignUp(true) }}>SignUp</button>
+          </div>}
+        </div> : null
+      }
     </header>
   );
 };
+
 export { Navbar };

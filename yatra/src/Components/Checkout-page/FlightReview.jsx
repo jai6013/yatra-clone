@@ -2,13 +2,6 @@ import React, { useContext, useState } from "react";
 import styles from "./../Css/Booking.module.css";
 import styled from "styled-components";
 import { BookingDetailsContext } from "../../Contexts/BookingDetailsContext";
-// import { FlightDataContext, FlightDetailsContext } from "../../Contexts/FlightDataContext";
-// import AirplaneTicketOutlinedIcon from "@mui/icons-material/AirplaneTicketOutlined";
-// import CompareArrowsOutlinedIcon from "@mui/icons-material/CompareArrowsOutlined";
-// import FilterAltOutlinedIcon from "@mui/icons-material/FilterAltOutlined";
-// import KeyboardArrowDownOutlinedIcon from "@mui/icons-material/KeyboardArrowDownOutlined";
-// import ArrowUpwardSharpIcon from "@mui/icons-material/ArrowUpwardSharp";
-// import { Navbar } from '../Header/Navbar'
 
 const Heading = styled.div`
     background-image: linear-gradient(to right, #43264e,#ea2331);

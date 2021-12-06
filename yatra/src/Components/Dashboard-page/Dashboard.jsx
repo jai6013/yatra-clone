@@ -21,7 +21,7 @@ const Dashboard = () => {
   useEffect(() => {
     //load bookings for user
     
-    axios.get(`http://localhost:2345/bookings/user/${user._id}`)
+    axios.get(`https://yaaatra-backend.herokuapp.com/bookings/user/${user._id}`)
     .then(function (response) {
       console.log(response.data)
       setUserData([...response.data]);

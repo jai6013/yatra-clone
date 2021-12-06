@@ -122,7 +122,7 @@ const Payment = () => {
                 
                 var config = {
                   method: 'post',
-                  url: 'http://localhost:2345/bookings',
+                  url: 'https://yaaatra-backend.herokuapp.com/bookings',
                   headers: { 
                     'Content-Type': 'application/json'
                   },

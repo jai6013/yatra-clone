@@ -94,7 +94,7 @@ function SignInLeft() {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        axios.get(`http://localhost:2345/users/query/${email}`).then((res)=>{
+        axios.get(`https://yaaatra-backend.herokuapp.com/users/query/${email}`).then((res)=>{
             const data = res.data
             for(var i = 0; i<data.length; i++){
                 if(data[i].password === password){

@@ -22,7 +22,6 @@ const CloseIconDiv = styled.div`
 `;
 
 export default function YatraCloseIcon({ handleClose, id }) {
-    console.log("id", {id})
     return (
         <div onClick={() => handleClose(id)}>
         <CloseIconDiv>

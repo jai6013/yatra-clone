@@ -105,7 +105,6 @@ const tempStyles = {
 }
 
 const Item = ({ el }) => {
-    console.log("Yatra Specials props", el);
 
     return (
         <ItemStyle>

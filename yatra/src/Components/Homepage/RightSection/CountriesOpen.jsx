@@ -90,15 +90,10 @@ const RouteItems = styled.div`
 const RouteItemStyle = styled.div`
     display: flex;
     flex-direction: column;
-    /* flex: 1 0 auto; */
-    /* justify-content: space-around; */
     position: relative;
-    /* width: 370px; */
     max-width: 30%; 
     min-width: 22%;
     margin: 0 12px;
-    /* background-color: yellow; */
-    // border: 1px solid black;
     border-radius: 10px;
     text-align: left;
     text-indent: 15px;
@@ -116,7 +111,6 @@ const RouteItemStyle = styled.div`
         top: 0;
         width: 20px;
         height: 1%;
-        /* background: red; */
     }
 
     &:hover {
@@ -165,7 +159,6 @@ const OpenWord = styled.div`
 `;
 
 const RouteItem = ({ el }) => {
-    console.log("Countries props", el);
 
     return (
         <RouteItemStyle>

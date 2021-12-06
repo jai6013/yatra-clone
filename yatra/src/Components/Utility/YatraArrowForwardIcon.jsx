@@ -27,7 +27,6 @@ const HoverArrow = styled.span`
 `;
 
 export default function YatraArrowForwardIcon(icon_type) {
-    console.log("sdsdf", icon_type);
     return (
         icon_type.icon_type === "1"
             ? <ArrowForwardIcon sx={ArrowStyles1} />

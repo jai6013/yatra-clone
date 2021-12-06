@@ -32,6 +32,10 @@
     no-repeat;
   background-size: 88px 39.5px;
 }
+a {
+  color:rgb(102, 102, 102);
+  text-decoration: none;
+}
 .IconsAndTextWraper {
   display: flex;
   align-items: center;
@@ -64,7 +68,10 @@
 .IconsAndText:hover,
 .IconsAndText:active {
   color: #f34f4f;
-  box-shadow: inset 0 -5px #f34f4f;
+  /* box-shadow: inset 0 -5px #f34f4f; */
+  border-bottom: 2px solid #f34f4f;
+  box-sizing: border-box;
+  transform: scale(1.1);
 }
 .Icons {
   font-size: 1.1em !important;

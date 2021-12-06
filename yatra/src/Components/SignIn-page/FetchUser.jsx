@@ -8,7 +8,7 @@ function fetchUser({email, password}) {
 
     const config = {
         method: 'get',
-        url: "http://localhost:2345/users"
+        url: "https://yaaatra-backend.herokuapp.com/users"
     };
 
     return axios(config);
