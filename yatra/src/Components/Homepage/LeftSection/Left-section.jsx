@@ -82,19 +82,10 @@ function Leftsection() {
   }
 
   const searchFlights = () => {
-    console.log(flightBookingData.originCode, flightBookingData.destinationCode)
-    //fetch flight data
-    axios.get(`http://api.aviationstack.com/v1/flights?access_key=aa6f4adcbec0698dd8eef032c4bffc36&dep_iata=${flightBookingData.originCode}&arr_iata=${flightBookingData.destinationCode}`)
-
+    axios.post("https://yaaatra-backend.herokuapp.com/bookings/allbooking", flightBookingData)
     .then((res)=> {
-    // console.log(res.data.data)      
-      const data = res.data.data;
-      data.map((e) =>
-        e.price = Math.floor(Math.random()*(5000 - 2500) + 2500)
-      )
-      return handleFlightContextDataChange(data)
-    }
-    )
+      handleFlightContextDataChange(res.data)
+    });
     setTimeout(() => {    
       setRedirectToBookings(true)
     }, 4000); 

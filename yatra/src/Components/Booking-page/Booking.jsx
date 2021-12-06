@@ -19,7 +19,6 @@ import ArrowUpwardSharpIcon from "@mui/icons-material/ArrowUpwardSharp";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { BookingDetailsContext } from "../../Contexts/BookingDetailsContext";
 import axios from "axios";
-import API from "../Utility/key";
 // import { FilterMenuDiv } from "./FilterMenu";
 
 
@@ -48,7 +47,7 @@ function Booking() {
   const [check, setCheck] = useState(false)
   const [redirectToBookings, setRedirectToBookings] = useState(false);
   const { token } = useContext(AuthContext)
-  
+
   
   
 
@@ -99,24 +98,15 @@ function Booking() {
   }
 
   const searchFlights = () => {
-    console.log(flightBookingData.originCode, flightBookingData.destinationCode)
+    
     //fetch flight data
-    axios.get(`http://api.aviationstack.com/v1/flights?access_key=${API}&dep_iata=${flightBookingData.originCode}&arr_iata=${flightBookingData.destinationCode}`)
-
+    axios.post("https://yaaatra-backend.herokuapp.com/bookings/allbooking", flightBookingData)
     .then((res)=> {
-    // console.log(res.data.data)      
-      const data = res.data.data;
-      data.map((e) =>
-        e.price = Math.floor(Math.random()*(5000 - 2500) + 2500)
-      )
-      setData(data)
-      handleFlightContextDataChange(data)
+      setData(res.data)
+      handleFlightContextDataChange(res.data)
     }
     ) 
   }
-  useEffect(()=>{
-    setData(flightContextData)
-  },[data])
   const format = (dateISOString) => {
     let date = new Date(dateISOString);
     let year = date.getFullYear();
