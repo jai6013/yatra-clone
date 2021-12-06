@@ -5,6 +5,7 @@ const { request } = require("express");
 const express = require("express");
 const router = express.Router();
 
+
 //models
 const Booking = require("../models/booking.model.js");
 
@@ -84,6 +85,26 @@ router.get("/user/:id", async function (req, res) {
         return res.status(400).send(err.message);
     }
 });
+
+router.post("/allBooking", async function(req,res){
+    try{
+        const {originCode, destinationCode} = req.body;
+        const API = "aa6f4adcbec0698dd8eef032c4bffc36"
+        var axios = require('axios')
+        axios.get(`http://api.aviationstack.com/v1/flights?access_key=${API}&dep_iata=${originCode}&arr_iata=${destinationCode}`)
+        .then((response)=> {
+            let data = response.data.data;
+            data.map((e) =>
+            e.price = Math.floor(Math.random()*(5000 - 2500) + 2500)
+            )
+            console.log(data)
+            res.status(200).send(data)
+        }
+        )
+    }catch(err){
+        return res.status(400).send(err)
+    }
+})
 
 //export
 module.exports = router;
