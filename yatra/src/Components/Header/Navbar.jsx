@@ -51,12 +51,7 @@ const Navbar = () => {
       label: "Train"
     }
   ];
-  useEffect(()=>{
-    if(token === ""){
-      return <Redirect to="/" />
-    }
-  },[handleTokenChange])
-
+  
   if (redirectToLogin) {
     return <Redirect to={`/signin`} />
   }
@@ -121,10 +116,13 @@ const Navbar = () => {
             <div>My Refund</div>
           </div>
           {token ? <div className={styles.TwoButtons} style={{ display: 'inline-flex', marginTop: '20px' }}>
-            <button onClick={() => { handleTokenChange("") }}>LogOut</button>
+            <button onClick={() => { 
+              handleTokenChange("")
+              return setRedirectToLogin(true)
+            }}>LogOut</button>
           </div> : <div className={styles.TwoButtons} style={{ display: 'inline-flex', marginTop: '20px' }}>
-            <button onClick={() => { setRedirectToLogin(true) }}>LogIn</button>
-            <button onClick={() => { setRedirectToSignUp(true) }}>SignUp</button>
+            <button onClick={() =>  setRedirectToLogin(true) }>LogIn</button>
+            <button onClick={() =>  setRedirectToSignUp(true) }>SignUp</button>
           </div>}
         </div> : null
       }
