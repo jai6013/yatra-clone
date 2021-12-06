@@ -13,9 +13,10 @@ import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import { AuthContext } from "../../Contexts/AuthContext";
 import { useContext, useEffect, useState } from "react";
 import axios from "axios";
+import { Redirect } from "react-router";
 
 const Dashboard = () => {
-  const {user} = useContext(AuthContext);
+  const {user,token} = useContext(AuthContext);
   const [userData, setUserData] = useState([]);
   
   useEffect(() => {
@@ -45,7 +46,11 @@ const Dashboard = () => {
     "HOLIDAYS",
     "MONUMENTS",
   ];
-
+  useEffect(()=>{
+    if(token === ""){
+      return <Redirect to ="/"/>
+    }
+  },[token])
   return (
     <div>
       <div className={styles.MainContainer}>

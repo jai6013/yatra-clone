@@ -1,5 +1,5 @@
 import styles from "./Navbar.module.css";
-import {useContext} from 'react'
+import {useContext, useEffect} from 'react'
 import {AuthContext} from '../../Contexts/AuthContext'
 import { useState } from "react";
 import FlightIcon from "@material-ui/icons/Flight";
@@ -51,6 +51,11 @@ const Navbar = () => {
       label: "Train"
     }
   ];
+  useEffect(()=>{
+    if(token === ""){
+      return <Redirect to="/" />
+    }
+  },[handleTokenChange])
 
   if (redirectToLogin) {
     return <Redirect to={`/signin`} />
@@ -61,7 +66,6 @@ const Navbar = () => {
   if (redirectToDashboard) {
     return <Redirect to={`/dashboard`} />
   }
-
   return (
     <header className={styles.MainHeader}>
       <div className={styles.header}>
