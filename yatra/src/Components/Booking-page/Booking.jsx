@@ -102,8 +102,10 @@ function Booking() {
     //fetch flight data
     axios.post("https://yaaatra-backend.herokuapp.com/bookings/allbooking", flightBookingData)
     .then((res)=> {
-      setData(res.data)
-      handleFlightContextDataChange(res.data)
+      if(res.data){
+        handleFlightContextDataChange(res.data)
+        setData(res.data)
+      }
     }
     ) 
   }
