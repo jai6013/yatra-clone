@@ -93,7 +93,7 @@ function Leftsection() {
     if(flightContextData.length !== 0){
       setRedirectToBookings(true)
     }
-  },[flightContextData])
+  },[])
   
   if(redirectToBookings){
     return <Redirect to={`/booking`}/>
