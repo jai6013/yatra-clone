@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
 import axios from 'axios';
 import { v4 as uuid } from "uuid";
+import { Redirect } from "react-router";
 
 const LeftStyles = styled.div`
     text-align: center;
@@ -82,7 +83,7 @@ function SignUpLeft() {
     const [firstName, setFirstName] = React.useState("");
     const [lastName, setLastName] = React.useState("");
     const [phone, setPhone] = React.useState("");
-
+    const [redirect, setRedirect] = useState(false)
     const handleSubmit = (e) => {
         e.preventDefault();
 
@@ -94,10 +95,14 @@ function SignUpLeft() {
             "password": pwd,
             "token": uuid()
         }).then(function (res) {
-            console.log(res);
+            setRedirect(true)
+        }).catch((err)=>{
+            console.log(err)
         })
     };
-
+    if(redirect){
+        return <Redirect to ="/signin" />
+    }
     return (
         <LeftStyles>
             <img
