@@ -85,13 +85,8 @@ function Leftsection() {
     axios.post("https://yaaatra-backend.herokuapp.com/bookings/allbooking", flightBookingData)
     .then((res)=> {
         handleFlightContextDataChange(res.data)
-    });
+    }).then(() => setRedirectToBookings(true))
   }
-  useEffect(()=>{
-    if(flightContextData.length !== 0){
-      setRedirectToBookings(true)
-    }
-  },[])
   
   if(redirectToBookings){
     return <Redirect to={`/booking`}/>
