@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import FacebookIcon from '@mui/icons-material/Facebook';
 import GoogleIcon from '@mui/icons-material/Google';
@@ -100,9 +100,11 @@ function SignUpLeft() {
             console.log(err)
         })
     };
-    if(redirect){
-        return <Redirect to ="/signin" />
-    }
+    useEffect(()=>{
+        if(redirect){
+            return <Redirect to ="/signin" />
+        }
+    },[redirect])
     return (
         <LeftStyles>
             <img
