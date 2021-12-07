@@ -84,9 +84,7 @@ function Leftsection() {
   const searchFlights = () => {
     axios.post("https://yaaatra-backend.herokuapp.com/bookings/allbooking", flightBookingData)
     .then((res)=> {
-      if(res.data){
         handleFlightContextDataChange(res.data)
-      }
     });
   }
   useEffect(()=>{
