@@ -89,7 +89,7 @@ router.get("/user/:id", async function (req, res) {
 router.post("/allBooking", async function(req,res){
     try{
         const {originCode, destinationCode} = req.body;
-        const API = "aa6f4adcbec0698dd8eef032c4bffc36"
+        const API = "78fa726afb40b8998eb9997120d9f338"
         var axios = require('axios')
         axios.get(`http://api.aviationstack.com/v1/flights?access_key=${API}&dep_iata=${originCode}&arr_iata=${destinationCode}`)
         .then((response)=> {
